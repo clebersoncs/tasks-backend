@@ -2,16 +2,21 @@ pipeline {
     agent any
 
     stages{
+        /*---------------------------------------------------- BUILD BACKEND */
         stage('Build Backend') {
             steps {
                 sh 'mvn clean package -DskipTests=true'
             }
         }
+
+        /*-------------------------------------------------------- UNIT TEST */
         stage('Unit Tests') {
             steps {
                 sh 'mvn test'
             }
         }
+
+        /*--------------------------------------------------- SONAR ANALYSIS */
         stage('Sonar Analysis') {
             environment {
                 scannerHome = tool 'SONAR_SCANNER'
@@ -22,5 +27,15 @@ pipeline {
                 }                
             }
         }
+        
+        /*------------------------------------------------------ QUALITY GATE */
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 1, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+        
     }
 }
