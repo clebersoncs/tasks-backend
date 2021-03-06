@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     stages{
-        stage('Apenas um teste') {
+        stage('Build Backend') {
             steps {
-                sh 'echo "Deu Certo"'
+                sh 'mvn clean package'
             }
         }
     }
