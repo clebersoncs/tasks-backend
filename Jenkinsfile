@@ -40,7 +40,9 @@ pipeline {
 
         /*---------------------------------------------------- DEPLOY BACKEND */
         stage('Deploy Backend') {
-            deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://jenkins:8001/')], contextPath: 'tasks-backend', onFailure: false, war: 'target/tasks-backend.war'
+            steps {
+                deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://jenkins:8001/')], contextPath: 'tasks-backend', onFailure: false, war: 'target/tasks-backend.war'
+            }
         }
         
     }
