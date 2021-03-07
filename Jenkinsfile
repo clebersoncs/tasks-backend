@@ -29,13 +29,18 @@ pipeline {
         }
         
         /*------------------------------------------------------ QUALITY GATE */
-        stage('Quality Gate') {
-            steps {
-                sleep(5)
-                timeout(time: 1, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
-                }
-            }
+        // stage('Quality Gate') {
+        //     steps {
+        //         sleep(5)
+        //         timeout(time: 1, unit: 'MINUTES') {
+        //             waitForQualityGate abortPipeline: true
+        //         }
+        //     }
+        // }
+
+        /*---------------------------------------------------- DEPLOY BACKEND */
+        state('Deploy Backend') {
+            deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://jenkins:8001/')], contextPath: 'tasks-backend', onFailure: false, war: 'target/tasks-backend.war'
         }
         
     }
